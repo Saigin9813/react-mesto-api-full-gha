@@ -1,0 +1,13 @@
+.header{
+  max-width: 880px;
+  margin: 0 auto;
+  border-bottom:1px solid rgba(54, 54, 54, 0.7);
+
+  padding: 45px 0 40px;
+  box-sizing: border-box;
+}
+@media screen and (max-width: 900px){
+  .header{
+    padding: 29px 0 26px;
+  }
+}
