@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+
 export function usePopupClose(isOpen, closePopup) {
   useEffect(() => {
     if (!isOpen) return;
