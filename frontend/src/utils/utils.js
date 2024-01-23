@@ -8,7 +8,7 @@ const configFormSelector = {
 }; 
 
 const apiCofig = {
-  url: 'https://mesto.nomoreparties.co/v1/cohort-74/',
+  url: 'http://api.saiginmesto.nomoredomainsmonster.ru/',
   headers: {
     authorization: '447d59ea-f397-4703-9e88-c54528884047',
     'Content-Type':'application/json'

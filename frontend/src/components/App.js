@@ -38,7 +38,6 @@ function App() {
                 setCards(cards);
             })
             .catch((err) => {
-                console.log(err);
                 openInfoTooltipPopup(false);
             });
     }
@@ -199,9 +198,7 @@ function App() {
       .login(loginData)
       .then((res) => {
         if (res && res.token) {
-          console.log(loginData)
           setCurrentUser({ ...currentUser, email: loginData.email });
-          debugger;
           localStorage.setItem("jwt", res.token);
           setLoggedIn(true);
           navigate("/");
@@ -219,7 +216,6 @@ function App() {
     setCurrentUser('')
   }
 
-  console.log(currentUser)
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <div className="page">
