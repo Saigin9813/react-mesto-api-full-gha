@@ -3,6 +3,7 @@ import { apiCofig } from "./utils";
 class Api {
   constructor({ url, headers }) {
     this._baseUrl = url;
+    console.log(this._baseUrl);
     this._token = headers;
   }
   //* Проверка статуса запроса

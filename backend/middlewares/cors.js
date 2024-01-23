@@ -1,5 +1,4 @@
-const allowedCors = [
-  'http://saiginmesto.nomoredomainsmonster.ru',
+const allowedCors = ['http://saiginmesto.nomoredomainsmonster.ru',
   'https://saiginmesto.nomoredomainsmonster.ru',
   'http://localhost:3000',
   'https://localhost:3000',
@@ -17,7 +16,7 @@ module.exports = (req, res, next) => {
   }
   if (method === 'OPTIONS') {
     res.header('Access-Control-Allow-Methods', DEFAULT_ALLOWED_METHODS);
-    res.header('Access-Control-Allow-Headers', requestHeaders);
+    res.header('Access-Control-Allow-Headers', 'Content-Type');
     res.end();
   }
   next();
