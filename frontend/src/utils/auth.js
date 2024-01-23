@@ -1,4 +1,4 @@
-const BASE_URL = 'https://api.saiginmesto.nomoredomainsmonster.ru';
+import { BASE_URL } from "./utils";
 
 function handleReply(res) {
   if (res.ok) {
@@ -7,26 +7,26 @@ function handleReply(res) {
   return Promise.reject(`Ошибка: ${res.status}`);
 }
 
-export function register(data) {
+export function register(email,password) {
   return fetch(`${BASE_URL}/signup`, {
     method: "POST",
     credentials: 'include',
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify(data),
+    body: JSON.stringify({ email,password }),
   })
   .then(handleReply);
 }
 
-export function login(data) {
+export function login(email,password) {
   return fetch(`${BASE_URL}/signin`, {
     method: "POST",
     credentials: 'include',
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify(data),
+    body: JSON.stringify({ email,password }),
   })
   .then(handleReply);
 }
