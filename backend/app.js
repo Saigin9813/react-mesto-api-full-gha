@@ -13,7 +13,7 @@ const { requestLogger, errorLogger } = require('./middlewares/logger');
 
 const { signUp, signIn } = require('./middlewares/validation');
 
-const { PORT = 3001, DB_URL = 'mongodb://127.0.0.1:27017/mestodb' } = process.env;
+const { PORT = 3000, DB_URL = 'mongodb://127.0.0.1:27017/mestodb' } = process.env;
 
 const app = express();
 
@@ -23,28 +23,6 @@ const limiter = rateLimit({
   max: 100, // Limit each IP to 100 requests per `window` (here, per 15 minutes)
   standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
   legacyHeaders: false, // Disable the `X-RateLimit-*` headers
-});
-const allowedCors = [
-  'http://saiginmesto.nomoredomainsmonster.ru',
-  'https://saiginmesto.nomoredomainsmonster.ru',
-  'localhost:3000',
-];
-
-// eslint-disable-next-line consistent-return
-app.use((req, res, next) => {
-  const { origin } = req.headers;
-  const { method } = req;
-  const DEFAULT_ALLOWED_METHODS = 'GET,HEAD,PUT,PATCH,POST,DELETE';
-  if (allowedCors.includes(origin)) {
-    res.header('Access-Control-Allow-Origin, http://saiginmesto.nomoredomainsmonster.ru, https://saiginmesto.nomoredomainsmonster.ru,localhost:3000');
-    res.header('Access-Control-Allow-Credentials', true);
-  }
-  if (method === 'OPTIONS') {
-    res.header('Access-Control-Allow-Methods', DEFAULT_ALLOWED_METHODS);
-    res.header('Access-Control-Allow-Header', 'Origin, X-Requested-With, Content-Type, Accept ');
-    return res.end();
-  }
-  next();
 });
 
 app.use(limiter);
