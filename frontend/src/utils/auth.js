@@ -10,6 +10,7 @@ function handleReply(res) {
 export function register(data) {
   return fetch(`${BASE_URL}/signup`, {
     method: "POST",
+    credentials: "include",
     headers: {
       "Content-Type": "application/json",
     },
@@ -20,6 +21,7 @@ export function register(data) {
 export function login(data) {
   return fetch(`${BASE_URL}/signin`, {
     method: "POST",
+    credentials: "include",
     headers: {
       "Content-Type": "application/json",
     },
@@ -30,9 +32,10 @@ export function login(data) {
 export function checkToken(token) {
   return fetch(`${BASE_URL}/users/me`, {
     method: "GET",
+    credentials: "include",
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
+      authorization: `Bearer ${token}`,
     },
   }).then(handleReply);
 }

@@ -31,9 +31,9 @@ app.use(limiter);
 mongoose.connect(DB_URL, {
 });
 
-app.use(express.json());
+app.use(cors);
 
-app.use(cors());
+app.use(express.json());
 
 app.use(requestLogger);
 
