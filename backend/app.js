@@ -25,8 +25,8 @@ const limiter = rateLimit({
   legacyHeaders: false, // Disable the `X-RateLimit-*` headers
 });
 const allowedCors = [
-  'http://saiginmesto.nomoredomainsmonster.ru',
-  'https://api.saiginmesto.nomoredomainsmonster.ru',
+  'http://saiginmesto.nomoredomainsmonster',
+  'https://api.saiginmesto.nomoredomainsmonster',
 ];
 
 const DEFAULT_ALLOWED_METHODS = 'GET,HEAD,PUT,PATCH,POST,DELETE';
