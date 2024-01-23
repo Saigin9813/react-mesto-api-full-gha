@@ -4,7 +4,7 @@ const helmet = require('helmet');
 const { errors } = require('celebrate');
 const rateLimit = require('express-rate-limit');
 const errorsHandler = require('./middlewares/errorHandler');
-const cors = require('cors');
+const cors = require('./middlewares/cors');
 const cardRouter = require('./routes/card');
 const userRouter = require('./routes/users');
 const { login, createUser } = require('./controllers/users');
@@ -33,7 +33,7 @@ mongoose.connect(DB_URL, {
 
 app.use(express.json());
 
-app.use(cors);
+app.use(cors());
 
 app.use(requestLogger);
 
