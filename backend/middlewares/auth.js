@@ -9,9 +9,9 @@ module.exports = (req, res, next) => {
   if (!authorization || !authorization.startsWith('Bearer ')) {
     throw new UnauthorizedError('Необходима авторизоваться');
   }
+  const token = authorization.replace('Bearer ', '');
   let payload;
   // Избавляемся от Bearer и записываем токен
-  const token = authorization.replace('Bearer ', '');
 
   try {
     // попытаемся верифицировать токен
