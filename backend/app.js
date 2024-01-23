@@ -1,4 +1,5 @@
 const express = require('express');
+const cors = require('cors');
 const mongoose = require('mongoose');
 const helmet = require('helmet');
 const { errors } = require('celebrate');
@@ -26,6 +27,8 @@ const limiter = rateLimit({
 });
 
 app.use(limiter);
+
+app.use(cors());
 
 app.use(express.json());
 
