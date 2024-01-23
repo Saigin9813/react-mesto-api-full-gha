@@ -1,10 +1,8 @@
-import { apiCofig } from "./utils";
+import { BASE_URL } from "./utils";
 
 class Api {
-  constructor({ url, headers }) {
-    this._baseUrl = url;
-    console.log(this._baseUrl);
-    this._token = headers;
+  constructor(options) {
+    this._baseUrl = options._baseUrl;
   }
   //* Проверка статуса запроса
   _requestResult(res) {
@@ -18,7 +16,7 @@ class Api {
   }
   // Получения информации о пользователе
   getUserInfo() {
-    return fetch(`${this._baseUrl}users/me`, {
+    return fetch(`${this._baseUrl}/users/me`, {
       headers: this._token,
     }).then((res) => {
       return this._requestResult(res);
@@ -26,7 +24,7 @@ class Api {
   }
   //Получение карточек
   getInitialCard() {
-    return fetch(`${this._baseUrl}cards`, {
+    return fetch(`${this._baseUrl}/cards`, {
       headers: this._token,
     }).then((res) => {
       return this._requestResult(res);
@@ -34,7 +32,7 @@ class Api {
   }
   //Запрос на изменение профиля
   editProfile(name, about) {
-    return fetch(`${this._baseUrl}users/me`, {
+    return fetch(`${this._baseUrl}/users/me`, {
       method: "PATCH",
       headers: this._token,
       body: JSON.stringify({
@@ -47,7 +45,7 @@ class Api {
   }
   // Запрос на изменение аватара
   editAvatar(avatar) {
-    return fetch(`${this._baseUrl}users/me/avatar`, {
+    return fetch(`${this._baseUrl}/users/me/avatar`, {
       method: "PATCH",
       headers: this._token,
       body: JSON.stringify({
@@ -59,7 +57,7 @@ class Api {
   }
 
   addCard(name, link) {
-    return fetch(`${this._baseUrl}cards`, {
+    return fetch(`${this._baseUrl}/cards`, {
       method: "POST",
       headers: this._token,
       body: JSON.stringify({
@@ -72,14 +70,14 @@ class Api {
   // Постановка и удалание лайка
   changeLikeCardStatus(idCard, isLiked) {
     if (isLiked) {
-      return fetch(`${this._baseUrl}cards/${idCard}/likes`, {
+      return fetch(`${this._baseUrl}/cards/${idCard}/likes`, {
         method: "PUT",
         headers: this._token,
       }).then((res) => {
         return this._requestResult(res);
       });
     } else {
-      return fetch(`${this._baseUrl}cards/${idCard}/likes`, {
+      return fetch(`${this._baseUrl}/cards/${idCard}/likes`, {
         method: "DELETE",
         headers: this._token,
       }).then((res) => {
@@ -89,7 +87,7 @@ class Api {
   }
 
   deleteCard(id) {
-    return fetch(`${this._baseUrl}cards/${id}`, {
+    return fetch(`${this._baseUrl}/cards/${id}`, {
       method: "DELETE",
       headers: this._token,
     }).then((res) => {
@@ -97,6 +95,12 @@ class Api {
     });
   }
 }
-const apiFetch = new Api(apiCofig);
+const apiFetch = new Api({
+  baseUrl: BASE_URL,
+  headers: {
+    'Content-Type': 'application/json',
+    'Authorization': `Bearer ${localStorage.getItem('jwt')}`,
+  },
+});
 
 export default apiFetch;

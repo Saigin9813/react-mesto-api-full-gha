@@ -7,12 +7,6 @@ const configFormSelector = {
   errorClass: 'popup__error_visible' 
 }; 
 
-const apiCofig = {
-  url: 'https://api.saiginmesto.nomoredomainsmonster.ru',
-  headers: {
-    authorization: '447d59ea-f397-4703-9e88-c54528884047',
-    'Content-Type':'application/json'
-  }
-}
+const BASE_URL = 'https://api.saiginmesto.nomoredomainsmonster.ru';
 
-export {apiCofig,configFormSelector}
+export {BASE_URL,configFormSelector}
