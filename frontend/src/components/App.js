@@ -169,7 +169,6 @@ function App() {
           }
         })
         .catch((err) => {
-          console.log(err);
           openInfoTooltipPopup(false);
         });
     }
@@ -188,7 +187,6 @@ function App() {
         }
       })
       .catch((err) => {
-        console.log(err);
         openInfoTooltipPopup(false);
       });
   }
@@ -205,7 +203,6 @@ function App() {
         }
       })
       .catch((err) => {
-        console.log(err);
         openInfoTooltipPopup(false);
       });
   }
