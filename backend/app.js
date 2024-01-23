@@ -13,7 +13,7 @@ const { requestLogger, errorLogger } = require('./middlewares/logger');
 
 const { signUp, signIn } = require('./middlewares/validation');
 
-const { PORT = 3000, DB_URL = 'mongodb://127.0.0.1:27017/mestodb' } = process.env;
+const { PORT = 3001, DB_URL = 'mongodb://127.0.0.1:27017/mestodb' } = process.env;
 
 const app = express();
 
@@ -26,14 +26,15 @@ const limiter = rateLimit({
 });
 const allowedCors = [
   'http://saiginmesto.nomoredomainsmonster',
-  'https://api.saiginmesto.nomoredomainsmonster',
+  'https://saiginmesto.nomoredomainsmonster',
+  'localhost:3000',
 ];
 
-const DEFAULT_ALLOWED_METHODS = 'GET,HEAD,PUT,PATCH,POST,DELETE';
-
+// eslint-disable-next-line consistent-return
 app.use((req, res, next) => {
   const { origin } = req.headers;
   const { method } = req;
+  const DEFAULT_ALLOWED_METHODS = 'GET,HEAD,PUT,PATCH,POST,DELETE';
   const requestHeaders = req.headers['access-control-request-headers'];
   if (allowedCors.includes(origin)) {
     res.header('Access-Control-Allow-Origin', origin);
@@ -42,15 +43,12 @@ app.use((req, res, next) => {
   if (method === 'OPTIONS') {
     res.header('Access-Control-Allow-Methods', DEFAULT_ALLOWED_METHODS);
     res.header('Access-Control-Allow-Headers', requestHeaders);
-    return res.end();
+    return res.status(200).send();
   }
-  return next();
+  next();
 });
 
 app.use(limiter);
-
-mongoose.connect(DB_URL, {
-});
 
 app.use(express.json());
 
@@ -68,6 +66,9 @@ app.use(errorLogger);
 
 app.use('*', (req, res, next) => {
   next(new NotFoundError('Страница не найдена'));
+});
+
+mongoose.connect(DB_URL, {
 });
 
 app.use(errors());
