@@ -25,26 +25,24 @@ const limiter = rateLimit({
   legacyHeaders: false, // Disable the `X-RateLimit-*` headers
 });
 const allowedCors = [
-  'http://saiginmesto.nomoredomainsmonster',
-  'https://saiginmesto.nomoredomainsmonster',
+  'http://api.saiginmesto.nomoredomainsmonster',
+  'https://api.saiginmesto.nomoredomainsmonster',
   'localhost:3000',
 ];
 
 // eslint-disable-next-line consistent-return
 app.use((req, res, next) => {
-  const { origin } = req.headers.origin;
+  const { origin } = req.headers;
   const { method } = req;
   const DEFAULT_ALLOWED_METHODS = 'GET,HEAD,PUT,PATCH,POST,DELETE';
   const requestHeaders = req.headers['access-control-request-headers'];
   if (allowedCors.includes(origin)) {
     res.header('Access-Control-Allow-Origin', origin);
-    res.header('Access-Control-Allow-Headers', 'Content-Type');
-    res.header('Access-Control-Allow-Credentials', true);
   }
   if (method === 'OPTIONS') {
     res.header('Access-Control-Allow-Methods', DEFAULT_ALLOWED_METHODS);
-    res.header('Access-Control-Allow-Headers', requestHeaders);
-    return res.status(200).send();
+    res.header('Access-Control-Allow-Header', requestHeaders);
+    return res.end();
   }
   next();
 });
