@@ -3,6 +3,7 @@ import { BASE_URL } from "./utils";
 class Api {
   constructor(options) {
     this._baseUrl = options._baseUrl;
+    this._headers = options.headers;
   }
   //* Проверка статуса запроса
   _requestResult(res) {
@@ -97,9 +98,9 @@ class Api {
 }
 const apiFetch = new Api({
   baseUrl: BASE_URL,
+  credential: 'include',
   headers: {
     'Content-Type': 'application/json',
-    'Authorization': `Bearer ${localStorage.getItem('jwt')}`,
   },
 });
 
