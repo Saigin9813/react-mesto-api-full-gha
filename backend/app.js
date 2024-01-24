@@ -16,6 +16,8 @@ const { signUp, signIn } = require('./middlewares/validation');
 
 const { PORT = 3000 } = process.env;
 
+const DB_URL = 'mongodb://127.0.0.1:27017/mestodb';
+
 const app = express();
 
 app.use(cors());
@@ -30,9 +32,8 @@ const limiter = rateLimit({
 
 app.use(limiter);
 
-mongoose.connect('mongodb://27017/mestodb', {
+mongoose.connect(DB_URL, {
 });
-
 
 app.use(express.json());
 
