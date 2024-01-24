@@ -33,11 +33,6 @@ app.use(limiter);
 mongoose.connect('mongodb://27017/mestodb', {
 });
 
-app.get('/crash-test', () => {
-  setTimeout(() => {
-    throw new Error('Сервер сейчас упадёт');
-  }, 0);
-});
 
 app.use(express.json());
 
@@ -53,6 +48,12 @@ app.use('/', cardRouter);
 
 app.use('*', (req, res, next) => {
   next(new NotFoundError('Страница не найдена'));
+});
+
+app.get('/crash-test', () => {
+  setTimeout(() => {
+    throw new Error('Сервер сейчас упадёт');
+  }, 0);
 });
 
 app.use(errorLogger);
