@@ -32,8 +32,7 @@ const limiter = rateLimit({
 
 app.use(limiter);
 
-mongoose.connect(DB_URL, {
-});
+mongoose.connect(DB_URL);
 
 app.use(express.json());
 
