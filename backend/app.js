@@ -1,9 +1,9 @@
 const express = require('express');
-const cors = require('./middlewares/cors');
 const mongoose = require('mongoose');
 const helmet = require('helmet');
 const { errors } = require('celebrate');
 const rateLimit = require('express-rate-limit');
+const cors = require('./middlewares/cors');
 const errorsHandler = require('./middlewares/errorHandler');
 const cardRouter = require('./routes/card');
 const userRouter = require('./routes/users');
