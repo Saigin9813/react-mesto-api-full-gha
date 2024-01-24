@@ -14,7 +14,7 @@ const { requestLogger, errorLogger } = require('./middlewares/logger');
 
 const { signUp, signIn } = require('./middlewares/validation');
 
-const { PORT = 3000, DB_URL = 'mongodb://127.0.0.1:27017/mestodb' } = process.env;
+const { PORT = 3000 } = process.env;
 
 const app = express();
 
@@ -30,7 +30,13 @@ const limiter = rateLimit({
 
 app.use(limiter);
 
-mongoose.connect(DB_URL, {
+mongoose.connect('mongodb://27017/mestodb', {
+});
+
+app.get('/crash-test', () => {
+  setTimeout(() => {
+    throw new Error('Сервер сейчас упадёт');
+  }, 0);
 });
 
 app.use(express.json());
@@ -45,13 +51,14 @@ app.use(auth);
 app.use('/', userRouter);
 app.use('/', cardRouter);
 
-app.use(errorLogger);
-
 app.use('*', (req, res, next) => {
   next(new NotFoundError('Страница не найдена'));
 });
 
+app.use(errorLogger);
 app.use(errors());
 app.use(errorsHandler);
 
-app.listen(PORT);
+app.listen(PORT, () => {
+  console.log(PORT);
+});
