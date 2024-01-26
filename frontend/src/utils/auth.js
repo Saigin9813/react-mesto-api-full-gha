@@ -7,7 +7,7 @@ function handleReply(res) {
   return Promise.reject(`Ошибка: ${res.status}`);
 }
 
-export function register(email,password) {
+export function register({ email,password }) {
   return fetch(`${BASE_URL}/signup`, {
     method: "POST",
     credentials: 'include',
@@ -19,7 +19,7 @@ export function register(email,password) {
   .then(handleReply);
 }
 
-export function login(email,password) {
+export function login({ email,password }) {
   return fetch(`${BASE_URL}/signin`, {
     method: "POST",
     credentials: 'include',

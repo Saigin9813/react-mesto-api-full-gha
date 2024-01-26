@@ -14,10 +14,9 @@ const { requestLogger, errorLogger } = require('./middlewares/logger');
 
 const { signUp, signIn } = require('./middlewares/validation');
 
-const DB_URL = 'mongodb://127.0.0.1:27017/mestodb';
-mongoose.connect(DB_URL);
+const { PORT = 3000, DB_URL = 'mongodb://127.0.0.1:27017/mestodb' } = process.env;
 
-const { PORT = 3000 } = process.env;
+mongoose.connect(DB_URL);
 
 const app = express();
 

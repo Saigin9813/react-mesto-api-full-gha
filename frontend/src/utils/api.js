@@ -3,7 +3,6 @@ import { BASE_URL } from "./utils";
 class Api {
   constructor(options) {
     this._baseUrl = options._baseUrl;
-    this._headers = options.headers;
   }
   //* Проверка статуса запроса
   _requestResult(res) {
@@ -18,7 +17,11 @@ class Api {
   // Получения информации о пользователе
   getUserInfo() {
     return fetch(`${this._baseUrl}/users/me`, {
-      headers: this._token,
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + localStorage.getItem('jwt')
+      }
     }).then((res) => {
       return this._requestResult(res);
     });
@@ -32,25 +35,32 @@ class Api {
     });
   }
   //Запрос на изменение профиля
-  editProfile(name, about) {
-    return fetch(`${this._baseUrl}/users/me`, {
+  editProfile(data) {
+    console.log(data);
+    return fetch('https://api.saiginmesto.nomoredomainsmonster.ru/users/me/', {
       method: "PATCH",
-      headers: this._token,
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + localStorage.getItem('jwt')
+      },
       body: JSON.stringify({
-        name: name,
-        about: about,
+        name: data.name,
+        about: data.about,
       }),
     }).then((res) => {
       return this._requestResult(res);
     });
   }
   // Запрос на изменение аватара
-  editAvatar(avatar) {
-    return fetch(`${this._baseUrl}/users/me/avatar`, {
+  editAvatar(data) {
+    return fetch('https://api.saiginmesto.nomoredomainsmonster.ru/users/me/avatar', {
       method: "PATCH",
-      headers: this._token,
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + localStorage.getItem('jwt')
+      },
       body: JSON.stringify({
-        avatar: avatar,
+        avatar: data.avatar,
       }),
     }).then((res) => {
       return this._requestResult(res);
@@ -98,10 +108,6 @@ class Api {
 }
 const apiFetch = new Api({
   baseUrl: BASE_URL,
-  credential: 'include',
-  headers: {
-    'Content-Type': 'application/json',
-  },
 });
 
 export default apiFetch;
