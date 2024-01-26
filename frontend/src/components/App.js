@@ -34,6 +34,7 @@ function App() {
     if (loggedIn) {
         Promise.all([apiFetch.getUserInfo(), apiFetch.getInitialCard()])
             .then(([data, cards]) => {
+              console.log(data)
                 setCurrentUser({ ...currentUser, ...data });
                 setCards(cards);
             })
