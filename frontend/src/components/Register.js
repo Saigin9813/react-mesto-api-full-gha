@@ -40,7 +40,7 @@ function Register(props) {
       </form>
       <h4 className="auth__text">
         Уже зарегистрированы?
-        <Link to="/sign-up" className="auth__link">
+        <Link to="/signin" className="auth__link">
           Войти
         </Link>
       </h4>

@@ -36,12 +36,9 @@ function App() {
       auth
         .checkToken()
         .then((res) => {
-          if (res && res.data) {
+          if (res) {
             setLoggedIn(true);
-            setCurrentUser({
-              ...currentUser,
-              email: res.data.email,
-            });
+            setCurrentUser(res.email);
             navigate("/");
           }
         })
@@ -50,7 +47,7 @@ function App() {
           openInfoTooltipPopup(false);
         });
     }
-}, [loggedIn, navigate]);
+}, []);
 
   useEffect(() => {
     if (loggedIn) {
@@ -137,7 +134,7 @@ function App() {
       .deleteCard(card._id)
       .then(() => {
         setCards((cardArray) =>
-          cardArray.filter((_id) => _id !== card._id)
+          cardArray.filter((c) => c._id !== card._id)
         );
       })
       .catch((err) => {
@@ -182,9 +179,9 @@ function App() {
     auth
       .register(regData)
       .then((res) => {
-        if (res && res.data) {
+        if (res) {
           openInfoTooltipPopup(true);
-          navigate("/sign-in");
+          navigate("/signin");
         }
       })
       .catch((err) => {
