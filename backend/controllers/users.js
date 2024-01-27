@@ -10,7 +10,7 @@ const NotFoundError = require('../error/NotFoundError');
 // Получит список пользователей
 module.exports.getUsers = (req, res, next) => {
   User.find({})
-    .then((users) => res.send(users))
+    .then((users) => res.send({ data: users }))
     .catch(next);
 };
 
@@ -50,10 +50,8 @@ module.exports.createUser = (req, res, next) => {
   passwordHash.then((hash) => User.create({
     name, about, avatar, email, password: hash,
   }))
-    .then(() => {
-      res.status(201).send({
-        name, about, avatar, email,
-      });
+    .then((user) => {
+      res.status(201).send(user.toJSON());
     })
     .catch((err) => {
       if (err === 'ValidationError') {

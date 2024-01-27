@@ -40,5 +40,6 @@ export function checkToken(token) {
       'Authorization': `Bearer ${token}`,
     },
   })
-  .then(handleReply);
+  .then(handleReply)
+  .then(data => data);
 }
