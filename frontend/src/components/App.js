@@ -29,7 +29,29 @@ function App() {
   const [isSignIn, setIsSignIn] = useState(true);
 
   const navigate = useNavigate();
-  
+
+  useEffect(() => {
+    const token = localStorage.getItem("jwt");
+    if (token) {
+      auth
+        .checkToken()
+        .then((res) => {
+          if (res && res.data) {
+            setLoggedIn(true);
+            setCurrentUser({
+              ...currentUser,
+              email: res.data.email,
+            });
+            navigate("/");
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+          openInfoTooltipPopup(false);
+        });
+    }
+}, [loggedIn, navigate]);
+
   useEffect(() => {
     if (loggedIn) {
         Promise.all([apiFetch.getUserInfo(), apiFetch.getInitialCard()])
@@ -38,35 +60,13 @@ function App() {
                 setCards(cards);
             })
             .catch((err) => {
+                console.log(err);
                 openInfoTooltipPopup(false);
             });
     }
 }, [loggedIn]);
 
-function checkToken() {
-  const token = localStorage.getItem("jwt");
-  if (token) {
-    auth
-      .checkToken(token)
-      .then((res) => {
-        if (res && res.data) {
-          setLoggedIn(true);
-          setCurrentUser({
-            ...currentUser,
-            email: res.data.email,
-          });
-          navigate("/");
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-        openInfoTooltipPopup(false);
-      });
-  }
-}
-useEffect(() => {
-  checkToken();
-}, []);  
+  
 
   function handleCardLike(card) {
     const isLiked = card.likes.some((id) => id === currentUser._id);
@@ -137,7 +137,7 @@ useEffect(() => {
       .deleteCard(card._id)
       .then(() => {
         setCards((cardArray) =>
-          cardArray.filter((cardItem) => cardItem._id !== card._id)
+          cardArray.filter((_id) => _id !== card._id)
         );
       })
       .catch((err) => {
@@ -175,6 +175,8 @@ useEffect(() => {
       link: card.link,
     });
   }
+
+  
 
   function handleRegister(regData) {
     auth

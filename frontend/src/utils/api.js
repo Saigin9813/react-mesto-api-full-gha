@@ -1,8 +1,8 @@
-import { BASE_URL } from "./utils";
+import { apiCofig } from "./utils";
 
 class Api {
-  constructor(options) {
-    this._baseUrl = options.baseUrl;
+  constructor({ url }) {
+    this._baseUrl = url;
   }
   //* Проверка статуса запроса
   _requestResult(res) {
@@ -16,22 +16,21 @@ class Api {
   }
   // Получения информации о пользователе
   getUserInfo() {
-    return fetch(`${this._baseUrl}/users/me`, {
-      method: 'GET',
+    return fetch(`${this._baseUrl}users/me`, {
       headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + localStorage.getItem('jwt')
+        authorization: 'Bearer ' + localStorage.getItem('jwt'),
+        'Content-Type':'application/json'
       }
     }).then((res) => {
-        this._requestResult(res);
+      return this._requestResult(res);
     });
   }
   //Получение карточек
   getInitialCard() {
-    return fetch(`${this._baseUrl}/cards`, {
+    return fetch(`${this._baseUrl}cards`, {
       headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + localStorage.getItem('jwt')
+        authorization: 'Bearer ' + localStorage.getItem('jwt'),
+        'Content-Type':'application/json'
       }
     }).then((res) => {
       return this._requestResult(res);
@@ -39,11 +38,11 @@ class Api {
   }
   //Запрос на изменение профиля
   editProfile(name, about) {
-    return fetch(`${this._baseUrl}/users/me`, {
+    return fetch(`${this._baseUrl}users/me`, {
       method: "PATCH",
       headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + localStorage.getItem('jwt')
+        authorization: 'Bearer ' + localStorage.getItem('jwt'),
+        'Content-Type':'application/json'
       },
       body: JSON.stringify({
         name: name,
@@ -55,11 +54,11 @@ class Api {
   }
   // Запрос на изменение аватара
   editAvatar(avatar) {
-    return fetch(`${this._baseUrl}/users/me/avatar`, {
+    return fetch(`${this._baseUrl}users/me/avatar`, {
       method: "PATCH",
       headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + localStorage.getItem('jwt')
+        authorization: 'Bearer ' + localStorage.getItem('jwt'),
+        'Content-Type':'application/json'
       },
       body: JSON.stringify({
         avatar: avatar,
@@ -68,13 +67,13 @@ class Api {
       return this._requestResult(res);
     });
   }
-// Добавление картчоки
+
   addCard(name, link) {
-    return fetch(`${this._baseUrl}/cards`, {
+    return fetch(`${this._baseUrl}cards`, {
       method: "POST",
       headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + localStorage.getItem('jwt')
+        authorization: 'Bearer ' + localStorage.getItem('jwt'),
+        'Content-Type':'application/json'
       },
       body: JSON.stringify({
         name: name,
@@ -83,51 +82,43 @@ class Api {
     }).then(this._requestResult);
   }
 
-  setLikes(cardId){
-    return fetch(`${this._baseUrl}/cards/${cardId}/likes`, {
-      method: "PUT",
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + localStorage.getItem('jwt')
-      },
-    }).then((res) => {
-      return this._requestResult(res);
-    });
-  }
-  deleteLike(cardId){
-    return fetch(`${this._baseUrl}/cards/${cardId}/likes`, {
-      method: "DELETE",
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + localStorage.getItem('jwt')
-      },
-    }).then((res) => {
-      return this._requestResult(res);
-    });
-  }
   // Постановка и удалание лайка
-  changeLikeCardStatus(isLiked,cardId) {
+  changeLikeCardStatus(idCard, isLiked) {
     if (isLiked) {
-     return this.setLikes(cardId)
+      return fetch(`${this._baseUrl}cards/${idCard}/likes`, {
+        method: "PUT",
+        headers: {
+          authorization: 'Bearer ' + localStorage.getItem('jwt'),
+          'Content-Type':'application/json'
+        },
+      }).then((res) => {
+        return this._requestResult(res);
+      });
     } else {
-      return this.deleteLike(cardId);
+      return fetch(`${this._baseUrl}cards/${idCard}/likes`, {
+        method: "DELETE",
+        headers: {
+          authorization: 'Bearer ' + localStorage.getItem('jwt'),
+          'Content-Type':'application/json'
+        },
+      }).then((res) => {
+        return this._requestResult(res);
+      });
     }
   }
 
   deleteCard(id) {
-    return fetch(`${this._baseUrl}/cards/${id}`, {
+    return fetch(`${this._baseUrl}cards/${id}`, {
       method: "DELETE",
       headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + localStorage.getItem('jwt')
+        authorization: 'Bearer ' + localStorage.getItem('jwt'),
+        'Content-Type':'application/json'
       },
     }).then((res) => {
       this._requestResult(res);
     });
   }
 }
-const apiFetch = new Api({
-  baseUrl: BASE_URL,
-});
+const apiFetch = new Api(apiCofig);
 
 export default apiFetch;

@@ -7,6 +7,8 @@ const configFormSelector = {
   errorClass: 'popup__error_visible' 
 }; 
 
-const BASE_URL = 'https://api.saiginmesto.nomoredomainsmonster.ru';
+const apiCofig = {
+  url: 'https://api.saiginmesto.nomoredomainsmonster.ru/',
+}
 
-export {BASE_URL,configFormSelector}
+export {apiCofig,configFormSelector}

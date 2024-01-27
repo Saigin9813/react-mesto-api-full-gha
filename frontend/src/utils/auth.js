@@ -1,4 +1,4 @@
-import { BASE_URL } from "./utils";
+export const BASE_URL = "https://api.saiginmesto.nomoredomainsmonster.ru";
 
 function handleReply(res) {
   if (res.ok) {
@@ -7,39 +7,33 @@ function handleReply(res) {
   return Promise.reject(`Ошибка: ${res.status}`);
 }
 
-export function register({ email,password }) {
+export function register(data) {
   return fetch(`${BASE_URL}/signup`, {
     method: "POST",
-    credentials: 'include',
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ email,password }),
-  })
-  .then(handleReply);
+    body: JSON.stringify(data),
+  }).then(handleReply);
 }
 
-export function login({ email,password }) {
+export function login(data) {
   return fetch(`${BASE_URL}/signin`, {
     method: "POST",
-    credentials: 'include',
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ email,password }),
-  })
-  .then(handleReply);
+    body: JSON.stringify(data),
+  }).then(handleReply);
 }
 
-export function checkToken(token) {
+export function checkToken() {
+  const token = localStorage.getItem('jwt')
   return fetch(`${BASE_URL}/users/me`, {
     method: "GET",
-    credentials: 'include',
     headers: {
       "Content-Type": "application/json",
-      'Authorization': `Bearer ${token}`,
+      authorization: `Bearer ${token}`,
     },
-  })
-  .then(handleReply)
-  .then(data => data);
+  }).then(handleReply);
 }
