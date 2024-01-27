@@ -23,7 +23,7 @@ class Api {
         'Authorization': 'Bearer ' + localStorage.getItem('jwt')
       }
     }).then((res) => {
-      return this._requestResult(res);
+        this._requestResult(res);
     });
   }
   //Получение карточек
@@ -72,7 +72,10 @@ class Api {
   addCard(name, link) {
     return fetch(`${this._baseUrl}/cards`, {
       method: "POST",
-      headers: this._token,
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + localStorage.getItem('jwt')
+      },
       body: JSON.stringify({
         name: name,
         link: link,
@@ -80,28 +83,34 @@ class Api {
     }).then(this._requestResult);
   }
 
+  setLikes(cardId){
+    return fetch(`${this._baseUrl}/cards/${cardId}/likes`, {
+      method: "PUT",
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + localStorage.getItem('jwt')
+      },
+    }).then((res) => {
+      return this._requestResult(res);
+    });
+  }
+  deleteLike(cardId){
+    return fetch(`${this._baseUrl}/cards/${cardId}/likes`, {
+      method: "DELETE",
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + localStorage.getItem('jwt')
+      },
+    }).then((res) => {
+      return this._requestResult(res);
+    });
+  }
   // Постановка и удалание лайка
-  changeLikeCardStatus(idCard, isLiked) {
+  changeLikeCardStatus(isLiked,cardId) {
     if (isLiked) {
-      return fetch(`${this._baseUrl}/cards/${idCard}/likes`, {
-        method: "PUT",
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer ' + localStorage.getItem('jwt')
-        },
-      }).then((res) => {
-        return this._requestResult(res);
-      });
+     return this.setLikes(cardId)
     } else {
-      return fetch(`${this._baseUrl}/cards/${idCard}/likes`, {
-        method: "DELETE",
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer ' + localStorage.getItem('jwt')
-        },
-      }).then((res) => {
-        return this._requestResult(res);
-      });
+      return this.deleteLike(cardId);
     }
   }
 

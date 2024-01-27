@@ -4,8 +4,9 @@ import CurrentUserContext from "../contexts/CurrentUserContext";
 function Card(props) {
   const userItem = useContext(CurrentUserContext);
 
-  const isOwn = props.card.owner._id === userItem._id;
-  const isLiked = props.card.likes.some(item => item._id === userItem._id);
+  const isOwn = props.card.owner === userItem._id;
+  const isLiked = props.card.likes.some(id => id === userItem._id);
+  const cardLikeButton = `elements__like ${isLiked ? 'elements__like_active': ''}`;
 
   function handleClick() {
     props.onCardClick(props.card);
@@ -36,7 +37,7 @@ function Card(props) {
       <div className="elements__description">
         <h2 className="elements__title">{props.name}</h2>
         <div className="elements__like-area">
-          <button type="button" className={`elements__like ${isLiked ? 'elements__like_active': ''}`} onClick={handleLikeCard}></button>
+          <button type="button" className={cardLikeButton} onClick={handleLikeCard}></button>
           <p className="elements__like-counter">{props.likes > 0 ? props.likes: 0}</p>
         </div>
       </div>

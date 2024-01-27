@@ -29,12 +29,11 @@ function App() {
   const [isSignIn, setIsSignIn] = useState(true);
 
   const navigate = useNavigate();
-
+  
   useEffect(() => {
     if (loggedIn) {
         Promise.all([apiFetch.getUserInfo(), apiFetch.getInitialCard()])
             .then(([data, cards]) => {
-              console.log(data)
                 setCurrentUser({ ...currentUser, ...data });
                 setCards(cards);
             })
@@ -44,10 +43,33 @@ function App() {
     }
 }, [loggedIn]);
 
-  
+function checkToken() {
+  const token = localStorage.getItem("jwt");
+  if (token) {
+    auth
+      .checkToken(token)
+      .then((res) => {
+        if (res && res.data) {
+          setLoggedIn(true);
+          setCurrentUser({
+            ...currentUser,
+            email: res.data.email,
+          });
+          navigate("/");
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+        openInfoTooltipPopup(false);
+      });
+  }
+}
+useEffect(() => {
+  checkToken();
+}, []);  
 
   function handleCardLike(card) {
-    const isLiked = card.likes.some((i) => i._id === currentUser._id);
+    const isLiked = card.likes.some((id) => id === currentUser._id);
 
     apiFetch
       .changeLikeCardStatus(card._id, !isLiked)
@@ -153,31 +175,6 @@ function App() {
       link: card.link,
     });
   }
-
-  function checkToken() {
-    const token = localStorage.getItem("jwt");
-    if (token) {
-      auth
-        .checkToken(token)
-        .then((res) => {
-          if (res && res.data) {
-            setLoggedIn(true);
-            setCurrentUser({
-              ...currentUser,
-              email: res.data.email,
-            });
-            navigate("/");
-          }
-        })
-        .catch((err) => {
-          console.log(err);
-          openInfoTooltipPopup(false);
-        });
-    }
-  }
-  useEffect(() => {
-    checkToken();
-  }, []);
 
   function handleRegister(regData) {
     auth

@@ -28,15 +28,9 @@ module.exports.getUserById = (req, res, next) => {
 
 // Получаем пользователя
 module.exports.getUser = (req, res, next) => {
-  User.findById(req.user._id)
-    .then((user) => {
-      if (!user) {
-        next(new NotFoundError('Пользователь по указанному id не найден'));
-      } else {
-        res.send(user);
-      }
-    })
-    .catch((error) => { next(error); });
+  User.find({})
+    .then((user) => res.send(user))
+    .catch(() => next());
 };
 
 // Создание нового пользователя
